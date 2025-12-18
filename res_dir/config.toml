@@ -1,0 +1,8 @@
+address = "127.0.0.1"
+port = 11310
+root_dir = "res_dir"
+cert_path = "res_dir/cert.pem"
+key_path = "res_dir/key.pem"
+user_name = "myuser"
+password_hash = "$2b$12$iNwN4yF3d9AUXBOexcfpDuBG2GH25Wmz9XGPf5q73Dio5cK6GHvWi"
+workers = 3

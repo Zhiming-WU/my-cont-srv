@@ -2,6 +2,11 @@
 name = "my_cont_srv"
 version = "0.1.0"
 edition = "2024"
+description = "A simple content server for browsing contents in a browser."
+readme = "README.md"
+repository = "https://github.com/Zhiming-WU/my-cont-srv.git"
+license = "MIT"
+categories = ["command-line-utilities"]
 
 [profile.release]
 opt-level = "z"

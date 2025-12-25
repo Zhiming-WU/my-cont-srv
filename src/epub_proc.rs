@@ -56,8 +56,8 @@ pub async fn epub_toc(req_path: web::Path<String>, app_state: web::Data<AppState
 
     let b64_path = base64::URL_SAFE_NO_PAD.encode(&path);
 
-    if doc.toc.len() == 0 {
-        if doc.spine.len() > 0
+    if doc.toc.is_empty() {
+        if !doc.spine.is_empty()
             && let Some(res_item) = doc.resources.get(&doc.spine[0].idref)
         {
             return epub_cont_proc(
@@ -126,7 +126,7 @@ fn epub_gen_html_nav_elem<R: Read + Seek>(
             } else {
                 out.push_str(r#"<span style="color:grey">Prex</span>"#);
             }
-            if doc.toc.len() > 0 {
+            if !doc.toc.is_empty() {
                 out.push_str(&format!(
                     r#"<a href="/epub_toc/{}">Table of Contents</a>"#,
                     urlencoding::encode(file_path)
@@ -214,17 +214,17 @@ async fn epub_cont_proc(
         mime = String::from("text/html; charset=utf-8");
     }
 
-    if mime.contains("htm") {
-        if let Some(nav) = epub_gen_html_nav_elem(&doc, &file_path, &*path_str, &inner_path) {
-            static RE: LazyLock<regex::Regex> =
-                LazyLock::new(|| regex::Regex::new("<body.*?>").unwrap());
-            let cont_str = String::from_utf8_lossy(&cont);
-            cont = RE
-                .replace_all(&cont_str, &format!(r#"$0{}"#, &nav))
-                .replace("</body>", &format!("{}</body>", &nav))
-                .as_bytes()
-                .to_vec();
-        }
+    if mime.contains("htm")
+        && let Some(nav) = epub_gen_html_nav_elem(&doc, &file_path, &path_str, &inner_path)
+    {
+        static RE: LazyLock<regex::Regex> =
+            LazyLock::new(|| regex::Regex::new("<body.*?>").unwrap());
+        let cont_str = String::from_utf8_lossy(&cont);
+        cont = RE
+            .replace_all(&cont_str, &format!(r#"$0{}"#, &nav))
+            .replace("</body>", &format!("{}</body>", &nav))
+            .as_bytes()
+            .to_vec();
     }
 
     {

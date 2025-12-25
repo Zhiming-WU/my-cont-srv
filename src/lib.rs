@@ -84,7 +84,7 @@ async fn basic_auth(
 ) -> Result<ServiceRequest, (actix_web::error::Error, ServiceRequest)> {
     let info = req.app_data::<AuthInfo>().unwrap();
     let mut failed = false;
-    if cred.user_id() != &info.user {
+    if cred.user_id() != info.user {
         failed = true;
     }
     if !failed {

@@ -3,6 +3,7 @@ A simple content server for browsing contents in a browser. Currently it support
 - Serving directories and files via HTTP/HTTPS for downloading
 - Serving epub files for reading in browser
 - TLS(HTTPS) support
+- Basic HTTP authentication support
 - Content-Type auto guess for viewing pdf, mp4, etc. in browser
 
 ## Usage
